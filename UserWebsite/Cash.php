@@ -1,0 +1,146 @@
+<?php
+session_start();
+include("orderDatabase.php");
+
+$user = $_SESSION["username"];
+    $itemName = $_SESSION["combined"];
+    $price = $_SESSION["total"];
+            $addSql = "INSERT INTO orderTable (user, item, price, statuss) 
+            VALUES ('$user', '$itemName', '$price',  'Pending')";
+         $resultaddSql = mysqli_query($ordersconn, $addSql);
+
+        
+// Clear the cart after processing
+$_SESSION['cart'] = [];
+?>
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thank You</title>
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f1f1f1;
+            margin: 0;
+            padding: 0;
+        }
+
+        header {
+            background-color: black;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo img {
+            max-height: 50px;
+            max-width: 100%;
+        }
+
+        nav ul {
+            list-style: none;
+            margin: 0;
+            padding: 0;
+            display: flex;
+        }
+
+        nav ul li {
+            margin: 0 10px;
+        }
+
+        nav ul li a {
+            text-decoration: none;
+            color: #fff;
+            font-weight: bold;
+        }
+
+        main {
+            padding: 20px;
+            background-color: #fff;
+            margin: 20px auto;
+            max-width: 800px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .thank-you {
+            margin-top: 50px;
+        }
+
+        .thank-you h1 {
+            font-size: 36px;
+            color: #4caf50;
+        }
+
+        .thank-you p {
+            font-size: 18px;
+        }
+
+        .order-number {
+            font-size: 24px;
+            color: #333;
+            margin-top: 20px;
+        }
+
+        .back-home {
+            margin-top: 20px;
+        }
+
+        .back-home button {
+            background-color: #4caf50;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            cursor: pointer;
+            border-radius: 3px;
+            transition: background-color 0.3s ease;
+        }
+
+        .back-home button:hover {
+            background-color: #45a049;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS8Aa4QEjqnv4nqpUQY_kQzeHuo1C609_FT4w&s" alt="INTI International College Penang">
+        </div>
+        <nav>
+            <ul>
+                
+                
+                <li><a href="Home.php">Back to menu</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="thank-you">
+            <h1>Thank You!</h1>
+            <p>Your order has been placed successfully.</p>
+            <p>Please pay at the counter!!!.</p>
+            <?php
+            $getId = "SELECT * FROM orderTable ORDER BY orderid DESC LIMIT 1";
+            $resultgetId = mysqli_query($ordersconn,$getId);
+            if(mysqli_num_rows($resultgetId)>0){
+                $row = mysqli_fetch_array($resultgetId);
+                echo"<p class=\"order-number\">Your Order Number: ".$row['orderid']."</p>";
+            }
+            
+            ?>
+                
+            <div class="back-home">
+                <button onclick="window.location.href='Home.php'">Back to Home</button>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

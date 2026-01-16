@@ -1,0 +1,13 @@
+{
+    
+        "name": "laravel/laravel",
+        "version": "8",
+        "description": "The Laravel Framework.",
+        "keywords": ["framework", "laravel"],
+        "license": "MIT",
+
+
+    "require": {
+        "phpmailer/phpmailer": "^6.9"
+    }
+}
